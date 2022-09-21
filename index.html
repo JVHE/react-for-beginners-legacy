@@ -9,7 +9,8 @@
 <script src="https://unpkg.com/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 <script type="text/babel">
-    function Btn({ text, onClick, big }) {
+    function Btn({ text, action, big }) {
+        console.log(`Rendering ${text} button`);
         return (
             <button
                 style={
@@ -23,23 +24,27 @@
                         fontSize: big ? '30px' : '16px'
                     }
                 }
-                onClick={onClick}>{text}</button>
+                onClick={action}>{text}</button>
         )
     }
+
+    const MemorizedBtn = React.memo(Btn)
 
     function App() {
         const [count, setCount] = React.useState(0)
 
+        const increment = () => setCount((current) => current = current + 1)
+        const decrement = () => setCount((current) => current = current - 1)
+        const reset = () => setCount((current) => current = 0)
+
         return <div>
             <h1>Count: {count}</h1>
-            <Btn onClick={() => setCount((current) => current = current + 1)} text="Increment" />
-            <Btn onClick={() => setCount((current) => current = current - 1)} text="Decrement" />
-            <Btn onClick={() => setCount((current) => current = 0)} text="Reset" />
-            <Btn onClick={() => setCount((current) => current = current * 2)} text="Double" />
-            <Btn onClick={() => setCount((current) => current = current / 2)} text="Half" />
-            <Btn onClick={() => setCount((current) => current = current * current)} text="Square" />
-            <Btn onClick={() => setCount((current) => current = current * current * current)} text="Cube" />
-            <Btn onClick={() => setCount((current) => current = current)} text="Save" big={true} />
+
+            <MemorizedBtn action={increment} text="Increment" />
+            <MemorizedBtn action={decrement} text="Decrement" />
+            <MemorizedBtn action={reset} text="Reset" />
+            <MemorizedBtn text="Save" big={true} />
+
         </div>
     };
 
