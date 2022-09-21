@@ -9,74 +9,41 @@
 <script src="https://unpkg.com/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 <script type="text/babel">
-    const root = document.getElementById('root');
-    function MinutesToHours() {
-        const [amount, setAmount] = React.useState("");
-        const [inverted, setInverted] = React.useState(false);
+    function Btn({ text, onClick, big }) {
+        return (
+            <button
+                style={
+                    {
+                        background: 'blue',
+                        color: 'white',
+                        padding: '10px 20px',
+                        border: 'none',
+                        borderRadius: '5px',
+                        cursor: 'pointer',
+                        fontSize: big ? '30px' : '16px'
+                    }
+                }
+                onClick={onClick}>{text}</button>
+        )
+    }
 
-        const MINUTES_KEY = "minutes";
-        const HOURS_KEY = "hours";
-
-        const onChange = (e) => {
-            setAmount(e.target.value);
-        };
-        return <div>
-            <div>
-                <label htmlFor="minutes">Minutes</label>
-                <input value={inverted ? amount * 60 : amount} id={MINUTES_KEY} placeholder="Minutes" type="number" onChange={onChange} disabled={inverted} />
-            </div>
-            <div>
-                <label htmlFor="hours" >Hours</label>
-                <input value={inverted ? amount : Math.round(amount / 60)} id={HOURS_KEY} placeholder="Hours" type="number" onChange={onChange} disabled={!inverted} />
-            </div>
-            <button onClick={() => setAmount(0)}>reset</button>
-            <button onClick={() => {
-                setAmount("")
-                setInverted(current => !current)
-            }}>{inverted ? "Turn back" : "Invert"}</button>
-        </div>
-    };
-    function KmToMiles() {
-        const [amount, setAmount] = React.useState("");
-        const [inverted, setInverted] = React.useState(false);
-
-        const KM_KEY = "km";
-        const MILES_KEY = "miles";
-
-        const onChange = (e) => {
-            setAmount(e.target.value);
-        };
-
-        return <div>
-            <div>
-                <label htmlFor="km">Km</label>
-                <input value={inverted ? amount * 1.609 : amount} id={KM_KEY} placeholder="Km" type="number" onChange={onChange} disabled={inverted} />
-            </div>
-            <div>
-                <label htmlFor="miles" >Miles</label>
-                <input value={inverted ? amount : Math.round(amount / 1.609)} id={MILES_KEY} placeholder="Miles" type="number" onChange={onChange} disabled={!inverted} />
-            </div>
-            <button onClick={() => setAmount(0)}>reset</button>
-            <button onClick={() => {
-                setAmount("")
-                setInverted(current => !current)
-            }}>{inverted ? "Turn back" : "Invert"}</button>
-        </div>
-    };
     function App() {
-        const [index, setIndex] = React.useState("-1");
+        const [count, setCount] = React.useState(0)
+
         return <div>
-            <h1>Super Converter</h1>
-            <select value={index} onChange={(e) => setIndex(e.target.value)}>
-                <option value="-1">Select a converter</option>
-                <option value="0">Minutes to Hours</option>
-                <option value="1">Km to Miles</option>
-            </select>
-            {index === "0" && <MinutesToHours />}
-            {index === "1" && <KmToMiles />}
+            <h1>Count: {count}</h1>
+            <Btn onClick={() => setCount((current) => current = current + 1)} text="Increment" />
+            <Btn onClick={() => setCount((current) => current = current - 1)} text="Decrement" />
+            <Btn onClick={() => setCount((current) => current = 0)} text="Reset" />
+            <Btn onClick={() => setCount((current) => current = current * 2)} text="Double" />
+            <Btn onClick={() => setCount((current) => current = current / 2)} text="Half" />
+            <Btn onClick={() => setCount((current) => current = current * current)} text="Square" />
+            <Btn onClick={() => setCount((current) => current = current * current * current)} text="Cube" />
+            <Btn onClick={() => setCount((current) => current = current)} text="Save" big={true} />
         </div>
     };
 
+    const root = document.getElementById('root');
     ReactDOM.render(<App />, root);
 </script>
 
